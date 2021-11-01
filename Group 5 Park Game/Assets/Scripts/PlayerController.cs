@@ -20,9 +20,10 @@ public class PlayerController : MonoBehaviour
         speed = .08f;
         jumpS = 6.5f;
         //randomPlayerColor();
-        //render.sharedMaterial = material[1];
+        
         render = GetComponent<Renderer>();
         render.enabled = true;
+        render.sharedMaterial = material[0];
     }
 
     // Update is called once per frame
@@ -38,25 +39,13 @@ public class PlayerController : MonoBehaviour
        {
            playerRb.AddForce(Vector3.up * jumpS, ForceMode.Impulse);
            isGrounded = false;
+           //randomPlayerColor();
+           switchColor();
            
 
        }
 
-       if (render.sharedMaterial = material[0]) // Checks player color; if true = green, else purple
-       {
-           playerColor = true;
-       }
-       else if (render.sharedMaterial = material[1])
-       {
-           playerColor = false;
-       }
-
-       if (start == true)
-       {
-           randomPlayerColor();
-           start = false;
-       }
-
+       
        
     }
 
@@ -71,11 +60,13 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.layer == 8)
         {
             //switchColor();
+            render.sharedMaterial = material[0];
            
         }
         if (collision.gameObject.layer == 9)
         {
             //switchColor();
+            render.sharedMaterial = material[1];
         }
     }
 
@@ -91,9 +82,9 @@ public class PlayerController : MonoBehaviour
        if (render.sharedMaterial = material[0]) 
        {
            render.sharedMaterial = material[1];
-           Debug.Log("Nice");
+           
        }
-       else
+        else 
        {
            render.sharedMaterial = material[0];
        }
