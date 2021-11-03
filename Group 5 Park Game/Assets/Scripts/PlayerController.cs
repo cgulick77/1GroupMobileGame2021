@@ -15,15 +15,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        x = 0;
         playerRb = GetComponent<Rigidbody>();
-        //render.sharedMaterial = material[x];
         speed = .08f;
         jumpS = 6.5f;
-        //randomPlayerColor();
-        
         render = GetComponent<Renderer>();
         render.enabled = true;
-        render.sharedMaterial = material[0];
+        render.sharedMaterial = material[x];
     }
 
     // Update is called once per frame
@@ -31,21 +29,18 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal"); // Detects player inputs
        float verticalInput = Input.GetAxis("Vertical");
+       render.sharedMaterial = material[x]; // Checks players current material
        
        Vector3 moveDirection = new Vector3(horizontalInput, 0.0f, verticalInput); // moves player w/ speed;
        transform.position += moveDirection * speed;
+       playerCurrentColor(); // Checks players current color
 
        if (Input.GetKey(KeyCode.Space) && isGrounded == true) // Player jump
        {
            playerRb.AddForce(Vector3.up * jumpS, ForceMode.Impulse);
            isGrounded = false;
-           //randomPlayerColor();
-           switchColor();
-           
-
+           switchColor(); // Switches player color
        }
-
-       
        
     }
 
@@ -59,14 +54,11 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.layer == 8)
         {
-            //switchColor();
-            render.sharedMaterial = material[0];
-           
+            x = 0;
         }
         if (collision.gameObject.layer == 9)
         {
-            //switchColor();
-            render.sharedMaterial = material[1];
+            x++;
         }
     }
 
@@ -74,19 +66,32 @@ public class PlayerController : MonoBehaviour
     {
         int randomColor = Random.Range(0, material.Length);
         render.sharedMaterial = material[randomColor];
+        //x = randomColor;
     }
 
-    private void switchColor() // Switches player color; if green will switch to purple, vice versa
+    public void switchColor() // Switches player color; if green will switch to purple, vice versa
     {
-        
-       if (render.sharedMaterial = material[0]) 
+    
+       if (x < 1 && isGrounded == false) 
        {
-           render.sharedMaterial = material[1];
-           
+           x++;
        }
-        else 
-       {
-           render.sharedMaterial = material[0];
+
+        else if (x > 0 && isGrounded == false)
+       { 
+           x = 0;
        }
+    }
+
+    public void playerCurrentColor()
+    {
+        if (x < 1)
+        {
+            playerColor = true; // Current player color is green
+        }
+        if (x > 0)
+        {
+            playerColor = false; // Current player color is purple
+        }
     }
 }
